@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Quản trị - {{ app_name }}{% endblock %}
+{% block content %}
+<h2>Bảng quản trị</h2>
+
+<div class="grid">
+  <div class="card"><div class="stat-label">Tổng người dùng</div><div class="stat-num">{{ stats.users }}</div></div>
+  <div class="card"><div class="stat-label">Chờ xác nhận</div><div class="stat-num">{{ "{:,.0f}".format(stats.pending_cashback) }}₫</div></div>
+  <div class="card"><div class="stat-label">Đã xác nhận</div><div class="stat-num">{{ "{:,.0f}".format(stats.confirmed_cashback) }}₫</div></div>
+  <div class="card"><div class="stat-label">Đã chi trả</div><div class="stat-num">{{ "{:,.0f}".format(stats.paid_out) }}₫</div></div>
+</div>
+
+<div class="card">
+  <h3>Thao tác nhanh</h3>
+  <a class="btn" href="{{ url_for('admin_import') }}">Nhập báo cáo hoa hồng (CSV)</a>
+  <a class="btn secondary" href="{{ url_for('admin_settings') }}">Cài đặt hệ thống</a>
+</div>
+
+<div class="card">
+  <h3>Yêu cầu rút tiền đang chờ xử lý</h3>
+  {% if pending_withdrawals %}
+  <table>
+    <thead><tr><th>Ngày</th><th>Người dùng</th><th>Số tiền</th><th>Ngân hàng</th><th></th></tr></thead>
+    <tbody>
+      {% for w in pending_withdrawals %}
+      <tr>
+        <td>{{ w.created_at[:10] }}</td>
+        <td>{{ w.name }}<br><span class="muted">{{ w.email }}</span></td>
+        <td>{{ "{:,.0f}".format(w.amount) }}₫</td>
+        <td>{{ w.bank_info }}</td>
+        <td>
+          <form method="post" action="{{ url_for('admin_withdrawal_action', wid=w.id, action='paid') }}" style="display:inline;">
+            <button type="submit">Đã trả</button>
+          </form>
+          <form method="post" action="{{ url_for('admin_withdrawal_action', wid=w.id, action='rejected') }}" style="display:inline;">
+            <button type="submit" class="secondary">Từ chối</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="muted">Không có yêu cầu nào đang chờ.</p>
+  {% endif %}
+</div>
+
+<div class="card">
+  <h3>Danh sách người dùng</h3>
+  <table>
+    <thead><tr><th>Tên</th><th>Email</th><th>Mã giới thiệu</th><th>Ngày tạo</th></tr></thead>
+    <tbody>
+      {% for u in users %}
+      <tr><td>{{ u.name }}{% if u.is_admin %} <span class="pill pill-confirmed">admin</span>{% endif %}</td><td>{{ u.email }}</td><td><code>{{ u.ref_code }}</code></td><td>{{ u.created_at[:10] }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

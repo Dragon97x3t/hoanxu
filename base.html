@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{{ app_name }}{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="{{ url_for('index') }}">{{ app_name }}</a>
+  <nav>
+    {% if session.get('user_id') %}
+      <a href="{{ url_for('dashboard') }}">Ví của tôi</a>
+      {% if session.get('is_admin') %}<a href="{{ url_for('admin_home') }}">Quản trị</a>{% endif %}
+      <a href="{{ url_for('logout') }}">Đăng xuất</a>
+    {% else %}
+      <a href="{{ url_for('login') }}">Đăng nhập</a>
+      <a href="{{ url_for('register') }}">Đăng ký</a>
+    {% endif %}
+  </nav>
+</header>
+
+<main class="wrap">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, msg in messages %}
+        <div class="flash flash-{{ category }}">{{ msg }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

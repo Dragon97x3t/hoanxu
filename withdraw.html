@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Rút tiền - {{ app_name }}{% endblock %}
+{% block content %}
+<div class="card" style="max-width:480px; margin:0 auto;">
+  <h2>Yêu cầu rút tiền</h2>
+  <p class="muted">Số dư khả dụng: <strong>{{ "{:,.0f}".format(wallet.available) }}₫</strong></p>
+  <form method="post">
+    <label for="amount">Số tiền muốn rút (₫)</label>
+    <input id="amount" name="amount" type="number" min="1" max="{{ wallet.available|int }}" required>
+    <label for="bank_info">Thông tin ngân hàng nhận tiền</label>
+    <textarea id="bank_info" name="bank_info" rows="3" placeholder="Ngân hàng, số tài khoản, tên chủ tài khoản" required>{{ user.bank_info or '' }}</textarea>
+    <button type="submit">Gửi yêu cầu</button>
+  </form>
+  <p class="muted" style="margin-top:14px;"><a href="{{ url_for('dashboard') }}">← Quay lại ví</a></p>
+</div>
+{% endblock %}

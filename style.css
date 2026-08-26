@@ -1,0 +1,30 @@
+/* CSS chức năng, đơn giản - phần giao diện đẹp sẽ làm ở bước sau */
+* { box-sizing: border-box; }
+body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; margin: 0; background: #f4f6f1; color: #16241f; }
+a { color: #b97b1f; }
+.topbar { display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; background: #fff; border-bottom: 1px solid #d6ddcd; }
+.topbar .brand { font-weight: 700; font-size: 1.1rem; text-decoration: none; color: #16241f; }
+.topbar nav a { margin-left: 16px; text-decoration: none; color: #4f6b5c; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 24px; }
+.flash { padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; font-size: 0.92rem; }
+.flash-error { background: #fbe3e0; color: #8a2c1c; }
+.flash-success { background: #e2f2e6; color: #1f6b3f; }
+.card { background: #fff; border: 1px solid #d6ddcd; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+.stat-num { font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stat-label { font-size: 0.82rem; color: #4f6b5c; }
+form label { display: block; font-size: 0.85rem; margin: 12px 0 4px; color: #4f6b5c; }
+form input, form select, form textarea { width: 100%; padding: 9px 10px; border: 1px solid #d6ddcd; border-radius: 8px; font: inherit; }
+button, .btn { display: inline-block; background: #d9962f; color: #23180a; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; text-decoration: none; margin-top: 14px; }
+button.secondary, .btn.secondary { background: #eee; color: #16241f; }
+table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+table th, table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #e8ece2; }
+.pill { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 0.75rem; }
+.pill-pending { background: #f6e6c8; color: #8a5a10; }
+.pill-confirmed { background: #e2f2e6; color: #1f6b3f; }
+.pill-rejected { background: #fbe3e0; color: #8a2c1c; }
+.pill-paid { background: #e2f2e6; color: #1f6b3f; }
+.pill-requested { background: #f6e6c8; color: #8a5a10; }
+.ref-box { display: flex; gap: 8px; align-items: center; background: #f4f6f1; border: 1px dashed #d6ddcd; padding: 10px 12px; border-radius: 8px; font-family: monospace; word-break: break-all; }
+.muted { color: #4f6b5c; font-size: 0.88rem; }
+.warn-box { background: #fbf3e0; border: 1px solid #e6c98a; padding: 12px 14px; border-radius: 8px; font-size: 0.88rem; margin-bottom: 16px; }

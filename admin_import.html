@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Nhập báo cáo hoa hồng - {{ app_name }}{% endblock %}
+{% block content %}
+<h2>Nhập báo cáo hoa hồng từ Shopee Affiliate Center</h2>
+
+<div class="warn-box">
+  Đây là cách "đồng bộ" an toàn cho bản lõi này: bạn xuất báo cáo đơn hàng/hoa hồng từ Shopee Affiliate Center
+  (hoặc mạng affiliate bạn dùng), lưu thành CSV theo đúng các cột bên dưới rồi tải lên đây. Hệ thống sẽ tự khớp
+  theo <strong>mã giới thiệu (sub_id)</strong> và cộng tiền vào đúng ví người dùng.
+</div>
+
+<div class="card">
+  <h3>Định dạng file CSV cần có</h3>
+  <p class="muted">Các cột (không phân biệt hoa/thường), theo đúng thứ tự hoặc chỉ cần đúng tên cột:</p>
+  <table>
+    <thead><tr>{% for c in expected %}<th>{{ c }}</th>{% endfor %}</tr></thead>
+    <tbody>
+      <tr><td>ABC1234</td><td>SP2608001</td><td>Áo thun nam</td><td>250000</td><td>12500</td><td>confirmed</td></tr>
+    </tbody>
+  </table>
+  <p class="muted" style="margin-top:10px;">
+    <strong>status</strong> chấp nhận: pending/unpaid (chờ xác nhận), confirmed/completed (đã xác nhận),
+    rejected/cancelled/invalid (từ chối). Nếu báo cáo thật của Shopee dùng tên cột hoặc trạng thái khác,
+    hãy đổi tên cột/giá trị trong file CSV cho khớp trước khi tải lên, hoặc cho mình biết mẫu thật để mình
+    chỉnh code khớp tự động.
+  </p>
+</div>
+
+<div class="card">
+  <h3>Tải file lên</h3>
+  <form method="post" enctype="multipart/form-data">
+    <label for="csv_file">File CSV</label>
+    <input id="csv_file" name="csv_file" type="file" accept=".csv" required>
+    <button type="submit">Nhập dữ liệu</button>
+  </form>
+</div>
+{% endblock %}

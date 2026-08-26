@@ -1,0 +1,3 @@
+sub_id,shopee_order_id,product_name,order_amount,commission_amount,status
+ABC1234,SP2608001,Ao thun nam,250000,12500,confirmed
+ABC1234,SP2608002,Giay the thao,890000,44500,pending

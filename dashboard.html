@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Ví của tôi - {{ app_name }}{% endblock %}
+{% block content %}
+<h2>Chào {{ user.name }}</h2>
+
+<div class="grid">
+  <div class="card">
+    <div class="stat-label">Đang chờ xác nhận</div>
+    <div class="stat-num">{{ "{:,.0f}".format(wallet.pending) }}₫</div>
+  </div>
+  <div class="card">
+    <div class="stat-label">Đã xác nhận</div>
+    <div class="stat-num">{{ "{:,.0f}".format(wallet.confirmed) }}₫</div>
+  </div>
+  <div class="card">
+    <div class="stat-label">Khả dụng để rút</div>
+    <div class="stat-num">{{ "{:,.0f}".format(wallet.available) }}₫</div>
+    <a class="btn" href="{{ url_for('withdraw') }}">Rút tiền</a>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Link giới thiệu của bạn</h3>
+  <p class="muted">Mã của bạn: <strong>{{ user.ref_code }}</strong>. Dán link sản phẩm Shopee vào ô bên dưới để tạo link chia sẻ có gắn mã giới thiệu.</p>
+  <label for="productUrl">Link sản phẩm / gian hàng Shopee</label>
+  <input id="productUrl" type="url" placeholder="https://shopee.vn/...">
+  <button type="button" class="secondary" onclick="buildLink()">Tạo link chia sẻ</button>
+  <div id="builtLinkBox" class="ref-box" style="display:none; margin-top:12px;">
+    <span id="builtLink"></span>
+  </div>
+  <p class="muted" style="margin-top:14px;">Link gốc dùng để chuyển hướng: <code>{{ ref_link }}?url=...</code></p>
+</div>
+
+<div class="card">
+  <h3>Lịch sử đơn hàng / hoa hồng</h3>
+  {% if orders %}
+  <table>
+    <thead><tr><th>Ngày</th><th>Sản phẩm</th><th>Giá trị đơn</th><th>Tiền hoàn</th><th>Trạng thái</th></tr></thead>
+    <tbody>
+      {% for o in orders %}
+      <tr>
+        <td>{{ o.created_at[:10] }}</td>
+        <td>{{ o.product_name or '—' }}</td>
+        <td>{{ "{:,.0f}".format(o.order_amount) }}₫</td>
+        <td>{{ "{:,.0f}".format(o.cashback_amount) }}₫</td>
+        <td><span class="pill pill-{{ o.status }}">
+          {% if o.status == 'pending' %}Chờ xác nhận{% elif o.status == 'confirmed' %}Đã xác nhận{% else %}Từ chối{% endif %}
+        </span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="muted">Chưa có đơn hàng nào được ghi nhận. Hãy chia sẻ link giới thiệu để bắt đầu.</p>
+  {% endif %}
+</div>
+
+<div class="card">
+  <h3>Lịch sử rút tiền</h3>
+  {% if withdrawals %}
+  <table>
+    <thead><tr><th>Ngày yêu cầu</th><th>Số tiền</th><th>Trạng thái</th></tr></thead>
+    <tbody>
+      {% for w in withdrawals %}
+      <tr>
+        <td>{{ w.created_at[:10] }}</td>
+        <td>{{ "{:,.0f}".format(w.amount) }}₫</td>
+        <td><span class="pill pill-{{ w.status }}">
+          {% if w.status == 'requested' %}Đang xử lý{% elif w.status == 'paid' %}Đã thanh toán{% else %}Từ chối{% endif %}
+        </span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="muted">Bạn chưa có yêu cầu rút tiền nào.</p>
+  {% endif %}
+</div>
+
+<script>
+function buildLink() {
+  var productUrl = document.getElementById('productUrl').value.trim();
+  if (!productUrl) { alert('Vui lòng dán link sản phẩm Shopee trước.'); return; }
+  var full = {{ ref_link|tojson }} + '?url=' + encodeURIComponent(productUrl);
+  document.getElementById('builtLink').textContent = full;
+  document.getElementById('builtLinkBox').style.display = 'flex';
+}
+</script>
+{% endblock %}
