@@ -1,16 +1,19 @@
 {% extends "base.html" %}
 {% block title %}Rút tiền - {{ app_name }}{% endblock %}
 {% block content %}
-<div class="card" style="max-width:480px; margin:0 auto;">
+<div class="auth-shell" style="max-width:460px;">
+  <span class="eyebrow">Ví Hoàn Xu</span>
   <h2>Yêu cầu rút tiền</h2>
-  <p class="muted">Số dư khả dụng: <strong>{{ "{:,.0f}".format(wallet.available) }}₫</strong></p>
-  <form method="post">
-    <label for="amount">Số tiền muốn rút (₫)</label>
-    <input id="amount" name="amount" type="number" min="1" max="{{ wallet.available|int }}" required>
-    <label for="bank_info">Thông tin ngân hàng nhận tiền</label>
-    <textarea id="bank_info" name="bank_info" rows="3" placeholder="Ngân hàng, số tài khoản, tên chủ tài khoản" required>{{ user.bank_info or '' }}</textarea>
-    <button type="submit">Gửi yêu cầu</button>
-  </form>
-  <p class="muted" style="margin-top:14px;"><a href="{{ url_for('dashboard') }}">← Quay lại ví</a></p>
+  <div class="card">
+    <p class="muted">Số dư khả dụng: <strong class="mono" style="color:var(--ink);">{{ "{:,.0f}".format(wallet.available) }}₫</strong></p>
+    <form method="post">
+      <label for="amount">Số tiền muốn rút (₫)</label>
+      <input id="amount" name="amount" type="number" min="1" max="{{ wallet.available|int }}" required>
+      <label for="bank_info">Thông tin ngân hàng nhận tiền</label>
+      <textarea id="bank_info" name="bank_info" rows="3" placeholder="Ngân hàng, số tài khoản, tên chủ tài khoản" required>{{ user.bank_info or '' }}</textarea>
+      <button type="submit">Gửi yêu cầu</button>
+    </form>
+  </div>
+  <p class="muted"><a href="{{ url_for('dashboard') }}">← Quay lại ví</a></p>
 </div>
 {% endblock %}
