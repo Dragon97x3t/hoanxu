@@ -117,11 +117,44 @@ def inject_globals():
 # Xác thực
 # ---------------------------------------------------------------------------
 
+def _mask_name(name):
+    name = (name or "Người dùng").strip()
+    if len(name) <= 2:
+        return name[0] + "***"
+    return name[:2] + "***"
+
+
 @app.route("/")
 def index():
     if session.get("user_id"):
         return redirect(url_for("dashboard"))
-    return redirect(url_for("login"))
+
+    conn = db.get_db()
+    stats = {
+        "total_confirmed": conn.execute(
+            "SELECT COALESCE(SUM(cashback_amount),0) s FROM orders WHERE status IN ('confirmed')"
+        ).fetchone()["s"],
+        "total_orders": conn.execute(
+            "SELECT COUNT(*) c FROM orders WHERE status IN ('confirmed','pending')"
+        ).fetchone()["c"],
+        "total_users": conn.execute("SELECT COUNT(*) c FROM users WHERE is_admin=0").fetchone()["c"],
+    }
+    recent = conn.execute(
+        """SELECT o.product_name, o.cashback_amount, o.status, o.created_at, u.name
+           FROM orders o JOIN users u ON u.id = o.user_id
+           ORDER BY o.created_at DESC LIMIT 6"""
+    ).fetchall()
+    activity = [
+        {
+            "who": _mask_name(r["name"]),
+            "product": r["product_name"] or "một đơn hàng",
+            "amount": r["cashback_amount"],
+            "status": r["status"],
+        }
+        for r in recent
+    ]
+    conn.close()
+    return render_template("home.html", stats=stats, activity=activity)
 
 
 @app.route("/register", methods=["GET", "POST"])
