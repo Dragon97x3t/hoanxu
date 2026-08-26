@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}{{ app_name }} — Hoàn tiền mua sắm{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <span class="eyebrow">Hoàn tiền mua sắm</span>
+      <h1>Mua như mọi khi,<br><em>nhận lại tiền thật</em> mỗi đơn.</h1>
+      <p class="lede">Hoàn Xu trích lại một phần hoa hồng tiếp thị liên kết từ Shopee, TikTok Shop và các sàn khác — chuyển thẳng vào ví của bạn sau mỗi đơn hàng hợp lệ.</p>
+      <div class="hero-actions">
+        <a class="btn" href="{{ url_for('register') }}">Tạo ví miễn phí</a>
+        <a class="btn secondary" href="#cach-hoat-dong">Xem cách hoạt động</a>
+      </div>
+    </div>
+    <div class="card counter-card">
+      <div class="counter-label">Tổng tiền đã hoàn cho người dùng</div>
+      <div class="counter-value mono">{{ "{:,.0f}".format(stats.total_confirmed) }}<span class="unit">₫</span></div>
+      <div class="counter-sub">
+        <span>Đơn đã ghi nhận<br><strong class="mono">{{ stats.total_orders }}</strong></span>
+        <span>Thành viên<br><strong class="mono">{{ stats.total_users }}</strong></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2 style="font-size:1rem; font-family:'Be Vietnam Pro',sans-serif; font-weight:600; color:var(--ink-soft); margin-bottom:16px;">Áp dụng khi mua sắm trên</h2>
+  <div class="platform-row">
+    <div class="platform-chip"><div class="name">Shopee</div><span class="status live">Đang hoạt động</span></div>
+    <div class="platform-chip"><div class="name">TikTok Shop</div><span class="status live">Đang hoạt động</span></div>
+    <div class="platform-chip"><div class="name">ShopeeFood</div><span class="status live">Đang hoạt động</span></div>
+    <div class="platform-chip"><div class="name">Lazada</div><span class="status">Beta</span></div>
+    <div class="platform-chip"><div class="name">Tiki</div><span class="status">Sắp ra mắt</span></div>
+  </div>
+</section>
+
+<section id="cach-hoat-dong" style="padding-top:44px;">
+  <span class="eyebrow">Cách hoạt động</span>
+  <h2 style="margin-bottom:20px;">Ba bước, không phức tạp</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Tìm cửa hàng hoặc sản phẩm</h3>
+      <p>Đăng ký ví, lấy link giới thiệu riêng của bạn.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>Mua sắm như bình thường</h3>
+      <p>Dán link sản phẩm Shopee vào ví để tạo link chia sẻ, rồi mua qua link đó.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Nhận tiền hoàn vào ví</h3>
+      <p>Sau khi đơn được xác nhận, phần trăm hoàn tiền chuyển vào ví Hoàn Xu.</p>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:44px;">
+  <span class="eyebrow">Trực tiếp</span>
+  <h2 style="margin-bottom:20px;">Hoạt động gần đây</h2>
+  <div class="feed-card">
+    {% if activity %}
+      {% for a in activity %}
+      <div class="feed-row">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        <span class="feed-who"><b>{{ a.who }}</b> {% if a.status == 'confirmed' %}đã nhận hoàn tiền{% else %}vừa phát sinh đơn{% endif %} từ {{ a.product }}</span>
+        <span class="feed-amount mono">+{{ "{:,.0f}".format(a.amount) }}₫</span>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="feed-empty">Chưa có hoạt động nào — hãy là người đầu tiên tạo ví và chia sẻ link giới thiệu!</div>
+    {% endif %}
+  </div>
+</section>
+
+<section style="padding-top:44px;">
+  <span class="eyebrow">Câu hỏi thường gặp</span>
+  <h2 style="margin-bottom:20px;">Trước khi bạn bắt đầu</h2>
+  <details class="card" style="cursor:pointer;" open>
+    <summary style="font-weight:600; cursor:pointer;">Hoàn Xu lấy tiền hoàn từ đâu?</summary>
+    <p class="muted" style="margin:10px 0 0;">Từ hoa hồng tiếp thị liên kết mà sàn thương mại điện tử trả khi đơn hàng qua liên kết của chúng tôi hoàn tất — một phần hoa hồng đó được chia lại cho bạn.</p>
+  </details>
+  <details class="card" style="cursor:pointer;">
+    <summary style="font-weight:600; cursor:pointer;">Mất bao lâu để tiền hoàn được ghi nhận?</summary>
+    <p class="muted" style="margin:10px 0 0;">Đơn hàng cần qua thời gian xác nhận của sàn (thường 30–45 ngày) trước khi tiền hoàn được cộng chính thức vào ví.</p>
+  </details>
+  <details class="card" style="cursor:pointer;">
+    <summary style="font-weight:600; cursor:pointer;">Sử dụng Hoàn Xu có mất phí không?</summary>
+    <p class="muted" style="margin:10px 0 0;">Không. Bạn trả giá y hệt như mua trực tiếp trên sàn — phần hoàn tiền đến từ hoa hồng, không cộng thêm vào giá sản phẩm.</p>
+  </details>
+</section>
+
+{% endblock %}
