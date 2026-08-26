@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Ví của tôi - {{ app_name }}{% endblock %}
 {% block content %}
+<span class="eyebrow" style="display:block; font-size:0.78rem; letter-spacing:.08em; text-transform:uppercase; color:var(--moss); font-weight:600; margin-bottom:6px;">Ví của tôi</span>
 <h2>Chào {{ user.name }}</h2>
+<p class="muted" style="margin-bottom:22px;">Đây là nơi bạn theo dõi tiền hoàn, link giới thiệu và lịch sử giao dịch.</p>
 
 <div class="grid">
   <div class="card">
