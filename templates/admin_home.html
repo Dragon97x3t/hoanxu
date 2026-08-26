@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Quản trị - {{ app_name }}{% endblock %}
 {% block content %}
-<h2>Bảng quản trị</h2>
+<span class="eyebrow" style="display:block; font-size:0.78rem; letter-spacing:.08em; text-transform:uppercase; color:var(--moss); font-weight:600; margin-bottom:6px;">Quản trị</span>
+<h2>Bảng điều khiển</h2>
+<p class="muted" style="margin-bottom:22px;">Tổng quan ví người dùng, yêu cầu rút tiền và thao tác vận hành.</p>
 
 <div class="grid">
   <div class="card"><div class="stat-label">Tổng người dùng</div><div class="stat-num">{{ stats.users }}</div></div>
