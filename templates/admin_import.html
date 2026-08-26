@@ -1,37 +1,26 @@
 {% extends "base.html" %}
-{% block title %}Nhập báo cáo hoa hồng - {{ app_name }}{% endblock %}
+{% block title %}Cài đặt - {{ app_name }}{% endblock %}
 {% block content %}
-<h2>Nhập báo cáo hoa hồng từ Shopee Affiliate Center</h2>
-
-<div class="warn-box">
-  Đây là cách "đồng bộ" an toàn cho bản lõi này: bạn xuất báo cáo đơn hàng/hoa hồng từ Shopee Affiliate Center
-  (hoặc mạng affiliate bạn dùng), lưu thành CSV theo đúng các cột bên dưới rồi tải lên đây. Hệ thống sẽ tự khớp
-  theo <strong>mã giới thiệu (sub_id)</strong> và cộng tiền vào đúng ví người dùng.
-</div>
+<span class="eyebrow" style="display:block; font-size:0.78rem; letter-spacing:.08em; text-transform:uppercase; color:var(--moss); font-weight:600; margin-bottom:6px;">Quản trị</span>
+<h2>Cài đặt hệ thống</h2>
 
 <div class="card">
-  <h3>Định dạng file CSV cần có</h3>
-  <p class="muted">Các cột (không phân biệt hoa/thường), theo đúng thứ tự hoặc chỉ cần đúng tên cột:</p>
-  <table>
-    <thead><tr>{% for c in expected %}<th>{{ c }}</th>{% endfor %}</tr></thead>
-    <tbody>
-      <tr><td>ABC1234</td><td>SP2608001</td><td>Áo thun nam</td><td>250000</td><td>12500</td><td>confirmed</td></tr>
-    </tbody>
-  </table>
-  <p class="muted" style="margin-top:10px;">
-    <strong>status</strong> chấp nhận: pending/unpaid (chờ xác nhận), confirmed/completed (đã xác nhận),
-    rejected/cancelled/invalid (từ chối). Nếu báo cáo thật của Shopee dùng tên cột hoặc trạng thái khác,
-    hãy đổi tên cột/giá trị trong file CSV cho khớp trước khi tải lên, hoặc cho mình biết mẫu thật để mình
-    chỉnh code khớp tự động.
-  </p>
-</div>
+  <form method="post">
+    <label for="cashback_share_percent">% hoa hồng chia lại cho người dùng</label>
+    <input id="cashback_share_percent" name="cashback_share_percent" type="number" step="1" min="0" max="100"
+           value="{{ settings.cashback_share_percent }}">
+    <p class="muted">Ví dụ: 70 nghĩa là người dùng nhận 70% hoa hồng, bạn giữ lại 30%.</p>
 
-<div class="card">
-  <h3>Tải file lên</h3>
-  <form method="post" enctype="multipart/form-data">
-    <label for="csv_file">File CSV</label>
-    <input id="csv_file" name="csv_file" type="file" accept=".csv" required>
-    <button type="submit">Nhập dữ liệu</button>
+    <label for="shopee_link_template">Mẫu link chuyển hướng sang Shopee</label>
+    <input id="shopee_link_template" name="shopee_link_template" type="text"
+           value="{{ settings.shopee_link_template }}">
+    <p class="muted">
+      Dùng <code>{sub_id}</code> cho mã giới thiệu và <code>{target_url}</code> cho link sản phẩm.
+      Bạn cần thay bằng link/định dạng thật từ tài khoản Shopee Affiliate của mình — Shopee không có API
+      công khai để tạo link kèm sub_id tự động, nên phần này cần bạn cung cấp mẫu chính xác Shopee cho phép
+      (thường tạo qua ứng dụng/portal Affiliate của Shopee).
+    </p>
+    <button type="submit">Lưu cài đặt</button>
   </form>
 </div>
 {% endblock %}
